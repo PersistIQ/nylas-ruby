@@ -1,6 +1,6 @@
 require 'restful_model'
 
-module Nylas
+module NylasDashboardV2SDK
   class File < RestfulModel
 
     parameter :size
@@ -37,4 +37,3 @@ module Nylas
 
   end
 end
-

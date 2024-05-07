@@ -1,6 +1,6 @@
 require 'restful_model'
 
-module Nylas
+module NylasDashboardV2SDK
   class Contact < RestfulModel
 
     parameter :name

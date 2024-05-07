@@ -1,4 +1,4 @@
 require 'folder'
 
-module Nylas
+module NylasDashboardV2SDK
 end

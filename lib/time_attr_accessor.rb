@@ -1,4 +1,4 @@
-module Nylas
+module NylasDashboardV2SDK
   module TimeAttrAccessor
     def time_attr_accessor(attr)
       parameter attr

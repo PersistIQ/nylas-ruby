@@ -1,7 +1,7 @@
 require 'restful_model'
 require 'event'
 
-module Nylas
+module NylasDashboardV2SDK
   class Calendar < RestfulModel
 
     parameter :name

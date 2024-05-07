@@ -1,6 +1,6 @@
 require 'restful_model'
 
-module Nylas
+module NylasDashboardV2SDK
   class Account < RestfulModel
 
     parameter :account_id

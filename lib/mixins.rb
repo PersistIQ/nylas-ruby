@@ -1,4 +1,4 @@
-module Nylas
+module NylasDashboardV2SDK
   module ReadUnreadMethods
     def update_param!(param, value)
       update('PUT', '', {
@@ -23,4 +23,3 @@ module Nylas
     end
   end
 end
-

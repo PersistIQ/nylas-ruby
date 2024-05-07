@@ -1,4 +1,4 @@
-module Nylas
+module NylasDashboardV2SDK
   module Parameters
     def self.included(base)
       base.extend(ClassMethods)

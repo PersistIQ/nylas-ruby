@@ -2,7 +2,7 @@ require 'restful_model'
 require 'time_attr_accessor'
 require 'mixins'
 
-module Nylas
+module NylasDashboardV2SDK
   class Thread < RestfulModel
     extend TimeAttrAccessor
 

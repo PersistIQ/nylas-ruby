@@ -1,4 +1,4 @@
-module Nylas
+module NylasDashboardV2SDK
   class ExpandedMessage < Message
     # override inflate because expanded messages have some special parameters
     # like In-Reply-To and Message-Id.

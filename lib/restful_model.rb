@@ -1,7 +1,7 @@
 require 'time_attr_accessor'
 require 'parameters'
 
-module Nylas
+module NylasDashboardV2SDK
   class RestfulModel
     extend Nylas::TimeAttrAccessor
     include Nylas::Parameters

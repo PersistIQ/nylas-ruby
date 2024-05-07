@@ -3,7 +3,7 @@
 # account management endpoint.
 require 'restful_model'
 
-module Nylas
+module NylasDashboardV2SDK
   class APIAccount < RestfulModel
 
     parameter :account_id

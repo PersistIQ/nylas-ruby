@@ -2,7 +2,7 @@ require 'restful_model'
 require 'file'
 require 'mixins'
 
-module Nylas
+module NylasDashboardV2SDK
   class Message < RestfulModel
 
     parameter :subject

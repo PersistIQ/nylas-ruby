@@ -24,7 +24,7 @@ require 'restful_model'
 require 'restful_model_collection'
 require 'version'
 
-module Nylas
+module NylasDashboardV2SDK
   Error = Class.new(::StandardError)
   NoAuthToken = Class.new(Error)
   UnexpectedAccountAction = Class.new(Error)
