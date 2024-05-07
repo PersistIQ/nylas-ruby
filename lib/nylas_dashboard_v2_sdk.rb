@@ -110,7 +110,7 @@ module NylasDashboardV2SDK
       @app_secret = app_secret
       @app_id = app_id
       @service_domain = service_domain
-      @version = Nylas::VERSION
+      @version = NylasDashboardV2SDK::VERSION
 
       if ::RestClient.before_execution_procs.empty?
         ::RestClient.add_before_execution_proc do |req, params|
@@ -249,23 +249,23 @@ module NylasDashboardV2SDK
     end
 
     OBJECTS_TABLE = {
-      "account" => Nylas::Account,
-      "calendar" => Nylas::Calendar,
-      "draft" => Nylas::Draft,
-      "thread" => Nylas::Thread,
-      "contact" => Nylas::Contact,
-      "event" => Nylas::Event,
-      "file" => Nylas::File,
-      "message" => Nylas::Message,
-      "folder" => Nylas::Folder,
-      "label" => Nylas::Label,
+      "account" => NylasDashboardV2SDK::Account,
+      "calendar" => NylasDashboardV2SDK::Calendar,
+      "draft" => NylasDashboardV2SDK::Draft,
+      "thread" => NylasDashboardV2SDK::Thread,
+      "contact" => NylasDashboardV2SDK::Contact,
+      "event" => NylasDashboardV2SDK::Event,
+      "file" => NylasDashboardV2SDK::File,
+      "message" => NylasDashboardV2SDK::Message,
+      "folder" => NylasDashboardV2SDK::Folder,
+      "label" => NylasDashboardV2SDK::Label,
     }
 
     # It's possible to ask the API to expand objects.
     # In this case, we do the right thing and return
     # an expanded object.
     EXPANDED_OBJECTS_TABLE = {
-      "message" => Nylas::ExpandedMessage,
+      "message" => NylasDashboardV2SDK::ExpandedMessage,
     }
 
     def _build_types_filter_string(filter, types)

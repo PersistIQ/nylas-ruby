@@ -6,7 +6,7 @@ module NylasDashboardV2SDK
     attr_accessor :filters
 
     def initialize(model_class, api, filters = {})
-      raise StandardError.new unless api.class <= Nylas::API
+      raise StandardError.new unless api.class <= NylasDashboardV2SDK::API
       @model_class = model_class
       @filters = filters
       @_api = api

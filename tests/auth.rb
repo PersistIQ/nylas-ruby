@@ -27,7 +27,7 @@ class App < Sinatra::Base
     api_path = ENDPOINTS[entry][:api_path]
     login_domain = ENDPOINTS[entry][:login_domain]
 
-    inbox = Nylas::API.new(APP_ID, APP_SECRET, nil, api_path, login_domain)
+    inbox = NylasDashboardV2SDK::API.new(APP_ID, APP_SECRET, nil, api_path, login_domain)
 
     # This URL must be registered with your application in the developer portal
     callback_url = "http://localhost:4567/callback"
@@ -38,9 +38,9 @@ class App < Sinatra::Base
     api_path = ENDPOINTS[0][:api_path]
     login_domain = ENDPOINTS[0][:login_domain]
 
-    inbox = Nylas::API.new(APP_ID, APP_SECRET, nil, api_path, login_domain)
+    inbox = NylasDashboardV2SDK::API.new(APP_ID, APP_SECRET, nil, api_path, login_domain)
     inbox_token = inbox.token_for_code(params[:code])
-    inbox = Nylas::API.new(APP_ID, APP_SECRET, inbox_token, api_path, login_domain)
+    inbox = NylasDashboardV2SDK::API.new(APP_ID, APP_SECRET, inbox_token, api_path, login_domain)
     return inbox_token
   end
 

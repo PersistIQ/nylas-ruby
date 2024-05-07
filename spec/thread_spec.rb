@@ -1,16 +1,16 @@
 require 'thread'
 require 'folder'
 
-describe Nylas::Thread do
+describe NylasDashboardV2SDK::Thread do
   before (:each) do
     @app_id = 'ABC'
     @app_secret = '123'
     @access_token = 'UXXMOCJW-BKSLPCFI-UQAQFWLO'
-    @inbox = Nylas::API.new(@app_id, @app_secret, @access_token)
+    @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret, @access_token)
   end
 
   describe '#messages' do
-    let(:thread) { Nylas::Thread.new(@inbox, nil) }
+    let(:thread) { NylasDashboardV2SDK::Thread.new(@inbox, nil) }
 
     before do
       thread.id = 'thread_id'
@@ -37,12 +37,12 @@ describe Nylas::Thread do
 
   describe "#as_json" do
     it "only includes labels/folder info" do
-      thr = Nylas::Thread.new(@inbox, nil)
+      thr = NylasDashboardV2SDK::Thread.new(@inbox, nil)
       thr.subject = 'Test event'
 
       labels = ['test label', 'label 2']
       labels.map! do |label|
-        l = Nylas::Label.new(@inbox, nil)
+        l = NylasDashboardV2SDK::Label.new(@inbox, nil)
         l.id = label
         l
       end
@@ -53,7 +53,7 @@ describe Nylas::Thread do
       expect(dict['label_ids']).to eq(['test label', 'label 2'])
 
       # Now check that we do the same if @folder is set.
-      thr = Nylas::Thread.new(@inbox, nil)
+      thr = NylasDashboardV2SDK::Thread.new(@inbox, nil)
       thr.subject = 'Test event'
       thr.folder = labels[0]
       dict = thr.as_json
@@ -71,7 +71,7 @@ describe Nylas::Thread do
         with(basic_auth: [@access_token]).
         to_return(:status => 200, :body => '{"unread": false}')
 
-      th = Nylas::Thread.new(@inbox, nil)
+      th = NylasDashboardV2SDK::Thread.new(@inbox, nil)
       th.id = 2
       th.mark_as_read!
       expect(a_request(:put, url)).to have_been_made.once
@@ -86,7 +86,7 @@ describe Nylas::Thread do
         with(basic_auth: [@access_token]).
         to_return(:status => 200, :body => '{"starred": true}')
 
-      th = Nylas::Thread.new(@inbox, nil)
+      th = NylasDashboardV2SDK::Thread.new(@inbox, nil)
       th.id = 2
       th.star!
       expect(a_request(:put, url)).to have_been_made.once

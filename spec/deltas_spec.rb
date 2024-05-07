@@ -1,7 +1,7 @@
 require 'event'
 
-describe Nylas::API do
-  subject(:inbox) { Nylas::API.new(app_id, app_secret, access_token) }
+describe NylasDashboardV2SDK::API do
+  subject(:inbox) { NylasDashboardV2SDK::API.new(app_id, app_secret, access_token) }
   let(:nth_cursor) { 'a9vtneydekzye7uwfumdd4iu3' }
   let(:app_id) { 'ABC' }
   let(:app_secret) { '123' }
@@ -32,7 +32,7 @@ describe Nylas::API do
     end
 
     it 'returns an external Enumerator when no block is given' do
-      result = inbox.deltas(nth_cursor, [Nylas::File], false, [Nylas::Folder])
+      result = inbox.deltas(nth_cursor, [NylasDashboardV2SDK::File], false, [NylasDashboardV2SDK::Folder])
       expect(result).to be_a(Enumerator)
       events = result.map { |e,o| [e, o.id]}
       expect(events).to contain_exactly(
@@ -42,12 +42,12 @@ describe Nylas::API do
 
     it 'should continuously query the delta sync API' do
       count = 0
-      inbox.deltas(0, [Nylas::File], false, [Nylas::Folder]) do |event, object|
+      inbox.deltas(0, [NylasDashboardV2SDK::File], false, [NylasDashboardV2SDK::Folder]) do |event, object|
         expect(object.cursor).to_not be_nil
         if event == 'create' or event == 'modify'
-          expect(object).to be_a Nylas::Message
+          expect(object).to be_a NylasDashboardV2SDK::Message
         elsif event == 'delete'
-          expect(object).to be_a Nylas::Event
+          expect(object).to be_a NylasDashboardV2SDK::Event
         end
         count += 1
       end
@@ -67,13 +67,13 @@ describe Nylas::API do
     it 'should continuously query the delta sync API' do
       count = 0
       EM.run do
-        inbox.delta_stream(0, [Nylas::Folder], 0, false, [Nylas::File]) do |event, object|
+        inbox.delta_stream(0, [NylasDashboardV2SDK::Folder], 0, false, [NylasDashboardV2SDK::File]) do |event, object|
 
           expect(object.cursor).to_not be_nil
           if event == 'create' or event == 'modify'
-            expect(object).to be_a Nylas::Message
+            expect(object).to be_a NylasDashboardV2SDK::Message
           elsif event == 'delete'
-            expect(object).to be_a Nylas::Event
+            expect(object).to be_a NylasDashboardV2SDK::Event
           end
           count += 1
           EM.stop if count == 3
@@ -106,9 +106,9 @@ describe Nylas::API do
       inbox.deltas(timestamp=0, []) do |event, object|
         expect(object.cursor).to_not be_nil
         if event == 'create' or event == 'modify'
-          expect(object).to be_a Nylas::Message
+          expect(object).to be_a NylasDashboardV2SDK::Message
         elsif event == 'delete'
-          expect(object).to be_a Nylas::Event
+          expect(object).to be_a NylasDashboardV2SDK::Event
         end
 
         count += 1
@@ -123,10 +123,10 @@ describe Nylas::API do
         inbox.delta_stream(0, []) do |event, object|
           expect(object.cursor).to_not be_nil
           if event == 'create' or event == 'modify'
-            expect(object).to be_a Nylas::Message
+            expect(object).to be_a NylasDashboardV2SDK::Message
             count += 1
           elsif event == 'delete'
-            expect(object).to be_a Nylas::Event
+            expect(object).to be_a NylasDashboardV2SDK::Event
             EM.stop
           end
         end

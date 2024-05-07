@@ -1,7 +1,7 @@
 require 'event'
 
-describe Nylas::APIAccount do
-  let(:inbox) { Nylas::API.new(app_id, app_secret, access_token) }
+describe NylasDashboardV2SDK::APIAccount do
+  let(:inbox) { NylasDashboardV2SDK::API.new(app_id, app_secret, access_token) }
   let(:app_id) { 'ABC' }
   let(:app_secret) { '123' }
   let(:access_token) { 'UXXMOCJW-BKSLPCFI-UQAQFWLO' }

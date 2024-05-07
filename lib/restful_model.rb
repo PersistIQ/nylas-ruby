@@ -3,8 +3,8 @@ require 'parameters'
 
 module NylasDashboardV2SDK
   class RestfulModel
-    extend Nylas::TimeAttrAccessor
-    include Nylas::Parameters
+    extend NylasDashboardV2SDK::TimeAttrAccessor
+    include NylasDashboardV2SDK::Parameters
 
     parameter :id
     parameter :account_id
@@ -17,7 +17,7 @@ module NylasDashboardV2SDK
     end
 
     def initialize(api, account_id = nil)
-      raise StandardError.new unless api.class <= Nylas::API
+      raise StandardError.new unless api.class <= NylasDashboardV2SDK::API
       @account_id = account_id
       @_api = api
     end

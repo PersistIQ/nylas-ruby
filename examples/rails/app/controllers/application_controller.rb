@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
         raise "error, you need to configure your app secrets in config/environments"
     end
     if config.nylas_api_server
-        @nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, session[:nylas_token], config.nylas_api_server, config.nylas_auth_domain)
+        @nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, session[:nylas_token], config.nylas_api_server, config.nylas_auth_domain)
     else
-        @nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, session[:nylas_token])
+        @nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, session[:nylas_token])
     end
   end
 

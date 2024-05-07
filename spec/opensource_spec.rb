@@ -1,8 +1,8 @@
 require 'event'
 
-describe Nylas::APIAccount do
+describe NylasDashboardV2SDK::APIAccount do
   before (:each) do
-    @inbox = Nylas::API.new(nil, nil, nil, 'http://localhost:5555')
+    @inbox = NylasDashboardV2SDK::API.new(nil, nil, nil, 'http://localhost:5555')
 
     @base_url = "http://localhost:5555/accounts?limit=100&offset=0"
     stub_request(:get, @base_url).to_return(

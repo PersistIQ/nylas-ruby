@@ -40,7 +40,7 @@
 
 * Deprecate the tags API
 * Remove the archive!/unarchive! methods
-* Expose `starred`, `unread`, `has_attachments` in Nylas::Thread
+* Expose `starred`, `unread`, `has_attachments` in NylasDashboardV2SDK::Thread
 
 [full changelog](https://github.com/nylas/nylas-ruby/compare/v1.2.1...v1.3.0)
 

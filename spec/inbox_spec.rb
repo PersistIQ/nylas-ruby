@@ -11,21 +11,21 @@ describe 'Nylas' do
   describe "initialize" do
     it "should add the 'before_execution_proc' to the RestClient to set the header" do
       if ::RestClient.before_execution_procs.empty?
-        @inbox = Nylas::API.new(@app_id, @app_secret)
+        @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret)
         expect(::RestClient.before_execution_procs.empty?).to eq(false)
       end
     end
 
-    it "should not do this multiple times if multiple copies of the Nylas::API are initialized" do
-      @inbox = Nylas::API.new(@app_id, @app_secret)
-      @inbox = Nylas::API.new(@app_id, @app_secret)
+    it "should not do this multiple times if multiple copies of the NylasDashboardV2SDK::API are initialized" do
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret)
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret)
       expect(::RestClient.before_execution_procs.count).to eq(1)
     end
   end
 
   describe "#url_for_path" do
     before (:each) do
-      @inbox = Nylas::API.new(@app_id, @app_secret, @access_token)
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret, @access_token)
     end
 
     it "should return the url for a provided path" do
@@ -33,16 +33,16 @@ describe 'Nylas' do
     end
 
     it "should return an error if you have not provided an auth token" do
-      @inbox = Nylas::API.new(@app_id, @app_secret)
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret)
       expect {
         @inbox.url_for_path('/wobble')
-      }.to raise_error(Nylas::NoAuthToken)
+      }.to raise_error(NylasDashboardV2SDK::NoAuthToken)
     end
   end
 
   describe "#url_for_authentication" do
     before (:each) do
-      @inbox = Nylas::API.new(@app_id, @app_secret, @access_token)
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret, @access_token)
     end
 
     it "should return the OAuth authorize endpoint with the provided redirect_uri" do
@@ -102,7 +102,7 @@ describe 'Nylas' do
 
   describe "#self.interpret_response" do
     before (:each) do
-      @inbox = Nylas::API.new(@app_id, @app_secret, @access_token)
+      @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret, @access_token)
       @result = double('result')
       allow(@result).to receive(:code).and_return(200)
     end
@@ -112,7 +112,7 @@ describe 'Nylas' do
         it "should raise an UnexpectedResponse" do
           expect {
             Nylas.interpret_response(@result, "I AM NOT JSON", {:expected_class => Array})
-          }.to raise_error(Nylas::UnexpectedResponse)
+          }.to raise_error(NylasDashboardV2SDK::UnexpectedResponse)
         end
       end
 
@@ -121,7 +121,7 @@ describe 'Nylas' do
           allow(@result).to receive(:code).and_return(200)
           expect {
             Nylas.interpret_response(@result, "{'_id':'5107089add02dcaecc000003'}", {:expected_class => Array})
-          }.to raise_error(Nylas::UnexpectedResponse)
+          }.to raise_error(NylasDashboardV2SDK::UnexpectedResponse)
         end
       end
     end
@@ -131,7 +131,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(400)
         expect {
           Nylas.interpret_response(@result, '{"type": "invalid_request_error", "message": "Check your syntax, bro!"}')
-        }.to raise_error(Nylas::InvalidRequest)
+        }.to raise_error(NylasDashboardV2SDK::InvalidRequest)
       end
     end
 
@@ -140,7 +140,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(402)
         expect {
           Nylas.interpret_response(@result, '{"type": "api_error", "message": "Sending to all recipients failed"}')
-        }.to raise_error(Nylas::MessageRejected)
+        }.to raise_error(NylasDashboardV2SDK::MessageRejected)
       end
     end
 
@@ -149,8 +149,8 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(403)
         expect {
           Nylas.interpret_response(@result, '{"message": "404: Not Found", "type": "api_error" }')
-                                   
-        }.to raise_error(Nylas::AccessDenied)
+
+        }.to raise_error(NylasDashboardV2SDK::AccessDenied)
       end
     end
 
@@ -159,7 +159,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(404)
         expect {
           Nylas.interpret_response(@result, '{"message": "Could not verify access credential.", "type": "invalid_request_error" }')
-        }.to raise_error(Nylas::ResourceNotFound)
+        }.to raise_error(NylasDashboardV2SDK::ResourceNotFound)
       end
     end
 
@@ -168,7 +168,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(429)
         expect {
           Nylas.interpret_response(@result, '{"type": "api_error", "message": "Daily sending quota exceeded"}')
-        }.to raise_error(Nylas::SendingQuotaExceeded)
+        }.to raise_error(NylasDashboardV2SDK::SendingQuotaExceeded)
       end
     end
 
@@ -177,7 +177,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(503)
         expect {
           Nylas.interpret_response(@result, '{"type": "api_error", "message": "The server unexpectedly closed the connection"}')
-        }.to raise_error(Nylas::ServiceUnavailable)
+        }.to raise_error(NylasDashboardV2SDK::ServiceUnavailable)
       end
     end
 
@@ -186,7 +186,7 @@ describe 'Nylas' do
         allow(@result).to receive(:code).and_return(500)
         expect {
           Nylas.interpret_response(@result, '')
-        }.to raise_error(Nylas::UnexpectedResponse)
+        }.to raise_error(NylasDashboardV2SDK::UnexpectedResponse)
       end
     end
 
@@ -198,7 +198,7 @@ describe 'Nylas' do
           :status => 200,
           :body => File.read('spec/fixtures/accounts_endpoint.txt'),
           :headers => {"Content-Type" => "application/json"})
-        @inbox = Nylas::API.new(@app_id, @app_secret)
+        @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret)
       end
 
       it "should auth with the app_secret" do
@@ -206,7 +206,7 @@ describe 'Nylas' do
       end
 
       it "should return a list of account objects" do
-        expect(@inbox.accounts.first).to be_an Nylas::Account
+        expect(@inbox.accounts.first).to be_an NylasDashboardV2SDK::Account
       end
 
       it "should return an object corresponding to the mocked values" do

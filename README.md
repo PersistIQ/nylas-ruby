@@ -92,7 +92,7 @@ The Nylas REST API uses server-side (three-legged) OAuth, and the Ruby gem provi
 require 'nylas_dashboard_v2_sdk'
 
 def login
-  nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
+  nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
   # The email address of the user you want to authenticate
   user_email = 'ben@nylas.com'
 
@@ -109,7 +109,7 @@ end
 
 ```ruby
 def login_callback
-  nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
+  nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
   nylas_token = nylas.token_for_code(params[:code])
 
   # Save the nylas_token to the current session, save it to the user model, etc.
@@ -123,7 +123,7 @@ If you're using the open-source version of the Nylas Sync Engine or have fewer t
 **Cancelling an Account**
 
 ```ruby
-  nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
+  nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, nil)
   account = nylas.accounts.find(account_id)
   account.downgrade!
 
@@ -134,7 +134,7 @@ If you're using the open-source version of the Nylas Sync Engine or have fewer t
 
 ```ruby
   # Query the status of every account linked to the app
-  nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, nylas_token)
+  nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, nylas_token)
   accounts = nylas.accounts
   accounts.each { |a| [a.account_id, a.sync_state] }
   # Available fields are: account_id, sync_state, trial, trial_expires and billing_state.
@@ -144,7 +144,7 @@ If you're using the open-source version of the Nylas Sync Engine or have fewer t
 ### Fetching Accounts
 
 ```ruby
-nylas = Nylas::API.new(config.nylas_app_id, config.nylas_app_secret, nylas_token)
+nylas = NylasDashboardV2SDK::API.new(config.nylas_app_id, config.nylas_app_secret, nylas_token)
 
 puts nylas.account.email_address #=> 'alice@example.com'
 puts nylas.account.provider      #=> 'gmail'
@@ -430,7 +430,7 @@ draft.send!
 # print the error message returned by the SMTP server:
 begin
   draft.send!
-rescue Nylas::APIError => e
+rescue NylasDashboardV2SDK::APIError => e
   puts "Failed with error: #{e.message}"
   if not e.server_error.nil?
     puts "The SMTP server replied: #{e.server_error}"
@@ -476,9 +476,9 @@ cursor = nylas.latest_cursor
 last_cursor = nil
 nylas.deltas(cursor) do |event, object|
   if event == "create" or event == "modify"
-    if object.is_a?(Nylas::Contact)
+    if object.is_a?(NylasDashboardV2SDK::Contact)
       puts "#{object.name} - #{object.email}"
-    elsif object.is_a?(Nylas::Event)
+    elsif object.is_a?(NylasDashboardV2SDK::Event)
       puts "Event!"
     end
   elsif event == "delete"
@@ -505,9 +505,9 @@ cursor = nylas.latest_cursor
 EventMachine.run do
   nylas.delta_stream(cursor) do |event, object|
     if event == "create" or event == "modify"
-      if object.is_a?(Nylas::Contact)
+      if object.is_a?(NylasDashboardV2SDK::Contact)
         puts "#{object.name} - #{object.email}"
-      elsif object.is_a?(Nylas::Event)
+      elsif object.is_a?(NylasDashboardV2SDK::Event)
         puts "Event!"
       end
     elsif event == "delete"
@@ -523,7 +523,7 @@ end
 To receive streams from multiple accounts, call `delta_stream` for each of them inside an `EventMachine.run` block.
 
 ```ruby
-api_handles = [] # a list of Nylas::API objects
+api_handles = [] # a list of NylasDashboardV2SDK::API objects
 
 EventMachine.run do
   api_handles.each do |a|
@@ -538,11 +538,11 @@ end
 ### Exclude changes from a specific type --- get only messages
 
 ```ruby
-nylas.deltas(cursor, exclude=[Nylas::Contact,
-                              Nylas::Event,
-                              Nylas::File,
-                              Nylas::Tag,
-                              Nylas::Thread]) do |event, object|
+nylas.deltas(cursor, exclude=[NylasDashboardV2SDK::Contact,
+                              NylasDashboardV2SDK::Event,
+                              NylasDashboardV2SDK::File,
+                              NylasDashboardV2SDK::Tag,
+                              NylasDashboardV2SDK::Thread]) do |event, object|
   if ['create', 'modify'].include? event
     puts object.subject
   end
@@ -554,13 +554,13 @@ end
 It's possible to ask the Deltas and delta stream API to return [expanded messages](https://nylas.com/docs/platform#expanded_message_view) directly:
 
 ```ruby
-nylas.deltas(cursor, exclude=[Nylas::Contact,
-                              Nylas::Event,
-                              Nylas::File,
-                              Nylas::Tag,
-                              Nylas::Thread], expanded_view=true) do |event, object|
+nylas.deltas(cursor, exclude=[NylasDashboardV2SDK::Contact,
+                              NylasDashboardV2SDK::Event,
+                              NylasDashboardV2SDK::File,
+                              NylasDashboardV2SDK::Tag,
+                              NylasDashboardV2SDK::Thread], expanded_view=true) do |event, object|
   if ['create', 'modify'].include? event
-    if obj.is_a?(Nylas::Message)
+    if obj.is_a?(NylasDashboardV2SDK::Message)
       puts obj.subject
       puts obj.message_id
     end
@@ -594,14 +594,14 @@ The [Nylas Sync Engine](http://github.com/nylas/sync-engine) is open source, and
 
 ```ruby
 require 'nylas_dashboard_v2_sdk'
-nylas = Nylas::API.new(nil, nil, nil, 'http://localhost:5555/')
+nylas = NylasDashboardV2SDK::API.new(nil, nil, nil, 'http://localhost:5555/')
 
 # Get the id of the first account -- this is the access token we're
 # going to use.
 account_id = nylas.accounts.first.id
 
 # Display the body of the first message for the first account
-nylas = Nylas::API.new(nil, nil, account_id, 'http://localhost:5555/')
+nylas = NylasDashboardV2SDK::API.new(nil, nil, account_id, 'http://localhost:5555/')
 puts nylas.messages.first.body
 ```
 

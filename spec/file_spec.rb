@@ -1,12 +1,12 @@
 require 'file'
 require 'folder'
 
-describe Nylas::File do
+describe NylasDashboardV2SDK::File do
   before (:each) do
     @app_id = 'ABC'
     @app_secret = '123'
     @access_token = 'UXXMOCJW-BKSLPCFI-UQAQFWLO'
-    @inbox = Nylas::API.new(@app_id, @app_secret, @access_token)
+    @inbox = NylasDashboardV2SDK::API.new(@app_id, @app_secret, @access_token)
   end
 
   describe "#download" do
@@ -15,7 +15,7 @@ describe Nylas::File do
       stub_request(:get, url).with(basic_auth: [@access_token]).
       to_return(:status => 200, :body => "Raw body")
 
-      file = Nylas::File.new(@inbox, nil)
+      file = NylasDashboardV2SDK::File.new(@inbox, nil)
       file.id = 2
       expect(file.download).to eq('Raw body')
       expect(a_request(:get, url)).to have_been_made.once
@@ -27,9 +27,9 @@ describe Nylas::File do
       to_return(:status => 404, :body => '{"message": "Couldn\'t find file fakefile ",' +
                                          '"type": "invalid_request_error"}')
 
-      file = Nylas::File.new(@inbox, nil)
+      file = NylasDashboardV2SDK::File.new(@inbox, nil)
       file.id = 2
-      expect{ file.download }.to raise_error(Nylas::ResourceNotFound)
+      expect{ file.download }.to raise_error(NylasDashboardV2SDK::ResourceNotFound)
       expect(a_request(:get, url)).to have_been_made.once
     end
   end

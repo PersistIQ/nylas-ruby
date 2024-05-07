@@ -1,5 +1,5 @@
-describe Nylas::API do
-  let(:api) { Nylas::API.new('app_id', 'app_secret', 'key') }
+describe NylasDashboardV2SDK::API do
+  let(:api) { NylasDashboardV2SDK::API.new('app_id', 'app_secret', 'key') }
 
   describe '#messages' do
     context 'when expanded param is true' do

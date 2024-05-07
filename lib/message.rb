@@ -20,7 +20,7 @@ module NylasDashboardV2SDK
     parameter :folder
     parameter :labels
 
-    include Nylas::ReadUnreadMethods
+    include NylasDashboardV2SDK::ReadUnreadMethods
 
     def inflate(json)
       super
@@ -92,7 +92,7 @@ module NylasDashboardV2SDK
 
       RestClient.get(expanded_url){ |response,request,result|
         json = Nylas.interpret_response(result, response, :expected_class => Object)
-        expanded_message = Nylas::ExpandedMessage.new(@_api)
+        expanded_message = NylasDashboardV2SDK::ExpandedMessage.new(@_api)
         expanded_message.inflate(json)
         expanded_message
       }
