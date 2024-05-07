@@ -1,4 +1,4 @@
-require 'nylas'
+require 'nylas_dashboard_v2_sdk'
 
 class ApplicationController < ActionController::Base
 

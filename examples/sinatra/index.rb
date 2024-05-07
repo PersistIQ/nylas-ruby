@@ -1,5 +1,5 @@
 require 'yaml'
-require 'nylas'
+require 'nylas_dashboard_v2_sdk'
 require 'sinatra'
 
 # Enable session to store token

@@ -2,9 +2,9 @@ require 'sinatra'
 require 'yaml'
 require 'json'
 require 'open-uri'
-require 'nylas'
+require 'nylas_dashboard_v2_sdk'
 require 'rest-client'
-  
+
 set :port, 1234
 enable :sessions # Allows sinatra to persist session information for a user
 
@@ -70,7 +70,7 @@ get '/google/oauth2callback' do
               :redirect_uri  => $redirect_uri,
               :grant_type    => 'authorization_code'
            }
-     
+
     # Using Google's authorization code we can get an access and refresh token
     r = RestClient.post GOOGLE_OAUTH_ACCESS_TOKEN_URL, data
     # This refresh token will only be returned once unless you prompt the user
@@ -127,7 +127,7 @@ post '/exchange' do
              :name          => params['name'],
              :email_address => params['email'],
              :provider      => 'exchange',
-             :settings      => exchange_settings 
+             :settings      => exchange_settings
            }
     connect_to_nylas(data)
   end
@@ -179,7 +179,7 @@ def get_email_from_access_token(google_access_token)
   data= {
            :access_token => google_access_token,
            :fields       => 'email' # specify we only want the email
-        } 
+        }
   r = RestClient.post GOOGLE_OAUTH_TOKEN_VALIDATION_URL, data
   json = JSON.parse(r.body)
   puts "\n#{json['email']}\n"

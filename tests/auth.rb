@@ -2,7 +2,7 @@
 # sure there's no breakage.
 
 require 'sinatra/base'
-require 'nylas'
+require 'nylas_dashboard_v2_sdk'
 require 'rest-client'
 
 $:.unshift File.join(File.dirname(__FILE__))
