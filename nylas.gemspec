@@ -2,12 +2,12 @@
 require "./lib/version.rb"
 
 Gem::Specification.new do |gem|
-  gem.name = "nylas"
+  gem.name = "nylas_dashboard_v2_sdk"
   gem.homepage = "http://github.com/nylas/nylas-ruby"
   gem.license = "MIT"
   gem.summary = %Q{Gem for interacting with the Nylas API}
   gem.description = %Q{Gem for interacting with the Nylas API.}
-  gem.version = Nylas::VERSION
+  gem.version = NylasDashboardV2SDK::VERSION
   gem.email = "support@nylas.com"
   gem.authors = ["Nylas, Inc."]
   gem.files = Dir.glob("lib/**/*.rb")
